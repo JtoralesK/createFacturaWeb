@@ -1,19 +1,17 @@
 "use client";
-import dynamic from "next/dynamic";
 import { Input } from "./input";
-
-const html2pdf: any = dynamic(() => import("html2pdf.js"), { ssr: false });
 
 export function InvoiceForm() {
   const options = {
-    margin: [0, 0, 0, 0], // Ajusta los márgenes si es necesario
-    filename: "invoice.pdf",
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "in", format: "letter", orientation: "portrait" }, // Ajusta el tamaño y orientación si es necesario
+    margin: [0, 0, 0, 0], // Reducción del margen a 0.5 pulgadas
+    filename: "myfile.pdf",
+    image: { type: "jpeg", quality: 0.85 }, // Ajusta la calidad de la imagen
+    html2canvas: { scale: 2 }, // Reduce la escala para ajustar la resolución
+    jsPDF: { unit: "in", format: [8.5, 11], orientation: "portrait" }, // Cambia a formato A4
   };
   const generatePdf = () => {
     if (typeof window !== "undefined") {
+      const html2pdf = require("html2pdf.js");
       const element = document.getElementById("invoice");
       html2pdf().set(options).from(element).save();
     }
